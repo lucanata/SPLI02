@@ -1,4 +1,6 @@
 # SPLI02
+----------------------------------------------
+#Usare solo Modified_codes
 
 Modifiche debugging effettuate (già presenti):
 - aggiunto stuttura dati u_char *dati (mancava in analyzer.c)
