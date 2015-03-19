@@ -15,3 +15,6 @@ modificare l'ip nel file genaral.conf con il proprio e cambiare en0 con la propr
 
 per lanciare lo sniffer:
 ./analyzer general.conf 
+
+
+!!!--- NON FATE IL COMMIT DI GENERAL.CONF ALTRIMENTI OGNUNO SE LO DEVE CAMBIARE SEMPRE CON LA SUA INTERFACCIA ---!!!
