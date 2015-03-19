@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="90">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+      <in>analyzer.c</in>
+      <in>glob.c</in>
+      <in>liv2.c</in>
+      <in>liv3.c</in>
+      <in>liv4.c</in>
+      <in>liv7.c</in>
+      <in>my.h</in>
+      <in>util.c</in>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath>analyzer</executablePath>
+        </makeTool>
+      </makefileType>
+      <item path="analyzer.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="glob.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="liv2.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="liv3.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="liv4.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="liv7.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="my.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="util.c" ex="false" tool="0" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
