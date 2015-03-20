@@ -196,6 +196,9 @@ void main(int argc,char **argv){
   }
  
   mem=fopen("log","wt");
+  /*pcap_open_live() is used to obtain a packet capture handle to look at packets on the network.
+  device is a string that specifies the network device to open; on Linux systems with 2.2 or later
+  kernels, a device argument of "any" or NULL can be used to capture packets from all interfaces. */
   pd=pcap_open_live(device,LENSNIF,0,1000,buffer);
   if(pd==NULL)exit(1);
   pcap_loop(pd,-1,liv2,dati);	
