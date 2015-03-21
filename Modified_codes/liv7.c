@@ -80,10 +80,10 @@ void liv7(u_int len,const u_char *p,u_int sport,u_int dport){
                     myprintf("         |Status-Line: ");
                     myprintf("%s\n", aux);
                   } 
-                }
-                else{                                       // Se non è un header
-                  myprintf("         |####BODY####\n");
+                  else{                                       // Se non è un header
+                    myprintf("         |####BODY####\n");
                   break;
+                  }
                 }
               }
             }
