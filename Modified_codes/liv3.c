@@ -3,7 +3,7 @@
 void liv3(u_int type,const u_char *p){
   const u_char *mp;
   int i,j,k,r,ihl,flag;
-  u_int id,fragm,len;
+  u_int id,fragm,len,tos;
   u_char ttl,proto;
   u_long flow;
   struct filt_ipv4 *aux_ipv4;
@@ -41,18 +41,19 @@ void liv3(u_int type,const u_char *p){
     id=ntohs(*(u_int *)(p+4));
     ttl=*(p+8);
     proto=*(p+9);
+    tos=ntohs(*(u_int *)(p+1));
     len=ntohs(*(u_int *)(p+2));
     ihl=((*p)&0x0f)*4;
     fragm=ntohs(*(u_int *)(p+6));
     if(p_ipv4){
       colore(3);
-      myprintf("IPv4 |");
+      myprintf("IPv4     |");
       print_ipv4(p+12);
       myprintf(" -> ");
       print_ipv4(p+16);
-      myprintf(" Id:%d Ttl:%d Proto:%d Len:%d",id,ttl,proto,len);
-      if(fragm&0x4000)myprintf(" DF");
-      myprintf(" Fragm:%d%c\n",fragm&0x1fff,(fragm&0x2000)?'M':'F');
+      myprintf("\n         |Tos:%d\n         |Id:%d\n         |Ttl:%d\n         |Proto:%d\n         |Len:%d",tos,id,ttl,proto,len);
+      if(fragm&0x4000)myprintf("\n         |DF");
+      myprintf("\n         |Fragm:%d%c\n",fragm&0x1fff,(fragm&0x2000)?'M':'F');
     }
     if(flag){
       filt_kill=1;
@@ -93,7 +94,7 @@ void liv3(u_int type,const u_char *p){
     len=ntohs(*(u_int *)(p+4));
     if(p_ipv6){
       colore(3);
-      myprintf("IPv6 |");
+      myprintf("IPv6     |");
       print_ipv6(p+8);
       myprintf(" -> ");
       print_ipv6(p+24);
@@ -109,26 +110,26 @@ void liv3(u_int type,const u_char *p){
   case 0x0806:
     if(!p_arp)return;
     colore(3);
-    myprintf("ARP  |");
+    myprintf("ARP      |");
     switch(htons(*(u_int *)(p+6))){
     case 1:
-      myprintf("Request   ");
+      myprintf("Request   \n");
       break;
     case 2:
-      myprintf("Reply     ");
+      myprintf("Reply     \n");
       break;
     case 3:
-      myprintf("R_Request ");
+      myprintf("R_Request \n");
       break;
     case 4:
-      myprintf("R_Reply   ");
+      myprintf("R_Reply   \n");
       break;
     }
-    myprintf(" ");
+    myprintf("         |");
     print_liv2(p+8);
     myprintf(" -> ");
     print_liv2(p+18);
-    myprintf(" ");
+    myprintf("\n         |");
     print_ipv4(p+14);
     myprintf(" -> ");
     print_ipv4(p+24);

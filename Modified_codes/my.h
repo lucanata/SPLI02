@@ -7,7 +7,7 @@
 #include <stdarg.h>
 
 
-void liv7(u_int,const u_char *);
+void liv7(u_int,const u_char *,u_int ssap,u_int dsap);
 void liv4(u_int,u_int,const u_char *);
 void liv3(u_int,const u_char *);
 void liv2(u_char *,const struct pcap_pkthdr *,const u_char *);
@@ -66,6 +66,10 @@ extern struct filt_tcp *filt_tcp;
 extern int p_arp;
 extern int p_igmp;
 extern int p_icmp;
+extern int p_telnet;
+extern int r_telnet;
+extern int p_http;
+extern int r_http;
 extern int filt_kill;
 extern int unknown;
 extern int decoded;

@@ -23,7 +23,6 @@ struct filt_tcp *filt_tcp=0;
 int p_arp=0;
 int p_igmp=0;
 int p_icmp=0;
-
 int p_http_body=0;
 int p_filt_kill=0;
 int p_unknown=0;

@@ -193,9 +193,25 @@ void main(int argc,char **argv){
 	if(strcmp(buffer,"end_udp")==0)break;
       }
     }
+    if(strcmp(buffer,"telnet")==0){
+    	for(;;){
+    		fscanf(fp,"%s",buffer);
+    		if (strcmp(buffer, "run")==0) r_telnet=1;
+            if (strcmp(buffer, "print")==0) p_telnet=1;
+            if(strcmp(buffer,"end_telnet")==0) break;
+      	}
+    }
+    if(strcmp(buffer,"http")==0){
+    	for(;;){
+    		fscanf(fp,"%s",buffer);
+    		if (strcmp(buffer, "run")==0) r_http=1;
+            if (strcmp(buffer, "print")==0) p_http=1;
+            if(strcmp(buffer,"end_http")==0) break;
+    	}
+    }
   }
  
-  mem=fopen("log","wt");
+  mem=fopen("log.txt","wt");
   /*pcap_open_live() is used to obtain a packet capture handle to look at packets on the network.
   device is a string that specifies the network device to open; on Linux systems with 2.2 or later
   kernels, a device argument of "any" or NULL can be used to capture packets from all interfaces. */

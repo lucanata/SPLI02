@@ -31,27 +31,26 @@ void liv4(u_int type,u_int len,const u_char *p){
     seq_num=ntohl(*(u_long *)(p+4));
     ack_num=ntohl(*(u_long *)(p+8));
     urg=ntohl(*(u_int *)(p+18));
-    ihl=((*(p+12))&0xf0)/4;
+    ihl=((*(p+12))&0xf0)/4;         
     ff=*(p+13);
     if(p_tcp){
       colore(4);
-      myprintf("TCP  |");
-      myprintf("%d -> %d",ssap,dsap);
-      myprintf(" Seq:%lu",seq_num);
-      if(ff&0x20)myprintf(" URG:%d",urg);
-      if(ff&0x10)myprintf(" ACK:%lu",ack_num);
-      if(ff&0x08)myprintf(" PSH");
-      if(ff&0x04)myprintf(" RST");
-      if(ff&0x02&&ack_num==0)myprintf(" REQ");
-      if(ff&0x02&&ack_num==1)myprintf(" ACP");
-      if(ff&0x01)myprintf(" FIN");
-      myprintf("\n");
+      myprintf("TCP      |");
+      myprintf("%d -> %d\n",ssap,dsap);
+      myprintf("         |Seq:%lu\n",seq_num);
+      if(ff&0x20)myprintf("         |URG:%d\n",urg);
+      if(ff&0x10)myprintf("         |ACK:%lu\n",ack_num);
+      if(ff&0x08)myprintf("         |PSH\n");
+      if(ff&0x04)myprintf("         |RST\n");
+      if(ff&0x02&&ack_num==0)myprintf("         |REQ\n");
+      if(ff&0x02&&ack_num==1)myprintf("         |ACP\n");
+      if(ff&0x01)myprintf("         |FIN\n");
     }
     if(flag){
       filt_kill=1;
       return;
     }
-    liv7(len-ihl,p+ihl);
+    liv7(len-ihl,p+ihl,ssap,dsap);      //passo anche le porte per capire che traffico è
     return;
     
   case 17:
@@ -73,21 +72,20 @@ void liv4(u_int type,u_int len,const u_char *p){
     }
     if(p_udp){
       colore(4);
-      myprintf("UDP  |");
-      myprintf("%d -> %d",ssap,dsap);
-      myprintf("\n");
+      myprintf("UDP      |");
+      myprintf("%d -> %d\n",ssap,dsap);
     }
     if(flag){
       filt_kill=1;
       return;
     }
-    liv7(len-8,p+8);
+    liv7(len-8,p+8,ssap,dsap);
     return;
 
   case 2:
     if(!p_igmp)return;  
     colore(4);
-    myprintf("IGMP |");
+    myprintf("IGMP     |");
     switch((*p)){
     case 0x11:
       myprintf("Query ");
@@ -127,32 +125,150 @@ void liv4(u_int type,u_int len,const u_char *p){
     return;
 
   case 1:
-    if(!p_icmp)return;  
+    if(!p_icmp)return;
+    u_int icmp_type=(*p);
+    u_int icmp_code=(*(p+1)); 
     colore(4);
-    myprintf("ICMP |");
-    switch((*p)&0x0f){
+    myprintf("ICMP     |");
+    myprintf("Type: ");
+    switch((*p)){
     case 0:
-      myprintf("Echo Reply");
+      myprintf("Echo Reply\n");
+      break;
+    case 3:
+      myprintf("Destination Unreacheable  \n");
+      myprintf("         |Code: ");
+      switch(icmp_code){
+      case 0:
+        myprintf("Net Unreacheable  ");
+        break;
+      case 1:
+        myprintf("Host Unreacheable  ");
+        break;
+      case 2:
+        myprintf("Protocol Unreacheable  ");
+        break;
+      case 3:
+        myprintf("Port Unreacheable  ");
+        break;
+      case 4:
+        myprintf("Fragment required  ");
+        break;
+      case 5:
+        myprintf("Source route failed  ");
+        break;
+      case 6:
+        myprintf("Destination network unknown  ");
+        break;
+      case 7:
+        myprintf("Destination host unknown  ");
+        break;
+      case 8:
+        myprintf("Source host isolated  ");
+        break;
+      case 9:
+        myprintf("Network administratively prohibited  ");
+        break;
+      case 10:
+        myprintf("Host administratively prohibited  ");
+        break;
+      case 11:
+        myprintf("Network unreacheable fot TOS  ");
+        break;
+      case 12:
+        myprintf("Host unreacheable fot TOS  ");
+        break;
+      case 13:
+        myprintf("Communications administratively prohibited  ");
+        break;
+      }
+      break;
+    case 4:
+      myprintf("Source quench  ");
+      break;
+    case 5:
+      myprintf("Redirect  \n");
+      myprintf("         |Code: ");
+      switch(icmp_code){
+      case 0:
+        myprintf("Redirect datagram for the network  ");
+        break;
+      case 1:
+        myprintf("Redirect datagram for the host  ");
+        break;
+      case 2:
+        myprintf("Redirect datagram for the TOS & network  ");
+        break;
+      case 3:
+        myprintf("Redirect datagram for the TOS & host  ");
+        break;      
+      }
+      break;
+    case 6:
+      myprintf("Alternative Host Address  ");
       break;
     case 8:
-      myprintf("Echo Request");
+      myprintf("Echo Request  ");
       break;
+    case 9:
+      myprintf("Router advertisement  ");
+      break;
+    case 10:
+      myprintf("Router selection  ");
+      break;
+    case 11:
+      myprintf("Time Exceeded  ");
+      myprintf("         |Code: ");
+      switch(icmp_code){
+      case 0:
+        myprintf("TTL exceeded  ");
+        break;
+      case 1:
+        myprintf("Fragment reassembly time exceeded  ");
+        break;
+      }
+      break;
+    case 12:
+      myprintf("Parameter problem  \n");
+      myprintf("         |Code: ");
+      switch(icmp_code){
+      case 0:
+        myprintf("Pointer problem  ");
+        break;
+      case 1:
+        myprintf("Missing a required operand  ");
+        break;
+      case 2:
+        myprintf("Bad length  ");
+        break;
+      }
     case 13:
-      myprintf("Timestamp Request");
+      myprintf("Timestamp");
       break;
     case 14:
-      myprintf("Timestamp Reply");
+      myprintf("Timestamp reply  ");
       break;
-
+    case 15:
+      myprintf("Information request  ");
+      break;
+    case 16:
+      myprintf("Information reply  ");
+      break;
+    case 17:
+      myprintf("Address mask request  ");
+      break;
+    case 18:
+      myprintf("Address mask reply  ");
+      break;
+    case 30:
+      myprintf("Traceroute  ");
+      break;
     default:
-//      unknown=1;
+      unknown=1;
       return;
-    }   
-
-    myprintf("\n");
+    }
     decoded=1;
     return;
-
   default:
     unknown=1;
     return;
